@@ -2,10 +2,10 @@
 
 A full-stack relationship-tracking tool. It flags contacts you're overdue to follow up with and drafts an outreach message for you — using a real LLM when an API key is configured, falling back to a template generator otherwise.
 
-**Live demo:** [ai-contact-reminder-1.onrender.com](https://ai-contact-reminder-1.onrender.com)
+**Live demo:** [ai-contact-reminder-1.onrender.com](https://ai-contact-reminder-1.onrender.com) or [charith-reddy-pareddy.github.io/ai-contact-reminder](https://charith-reddy-pareddy.github.io/ai-contact-reminder/)
 **API:** [ai-contact-reminder-backend.onrender.com](https://ai-contact-reminder-backend.onrender.com)
 
-> Both services run on Render's free tier and spin down after inactivity. The first request after a period of idleness can take 30–50 seconds while the backend wakes up — the UI shows a loading state during this time rather than an empty list.
+> The backend runs on Render's free tier and spins down after inactivity. The first request after a period of idleness can take 30–50 seconds while it wakes up — the UI shows a loading state during this time rather than an empty list. The GitHub Pages copy of the frontend is deployed automatically on every push to `main` (see `.github/workflows/deploy-pages.yml`) and points at the same Render backend, so both demos share the same live data.
 
 ---
 
