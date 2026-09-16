@@ -22,5 +22,37 @@
     "company": "Google",
     "lastContactedDate": "2024-03-01",
     "notes": ""
+  },
+  {
+    "id": "4",
+    "name": "Priya Nair",
+    "email": "priya@notion.so",
+    "company": "Notion",
+    "lastContactedDate": "2024-06-15",
+    "notes": "advisor"
+  },
+  {
+    "id": "5",
+    "name": "Marcus Webb",
+    "email": "marcus@airbnb.com",
+    "company": "Airbnb",
+    "lastContactedDate": "2024-02-20",
+    "notes": "friend, college roommate"
+  },
+  {
+    "id": "6",
+    "name": "David Kim",
+    "email": "david@sequoiacap.com",
+    "company": "Sequoia Capital",
+    "lastContactedDate": "2024-05-10",
+    "notes": "investor, met at conference"
+  },
+  {
+    "id": "7",
+    "name": "Tom Yamada",
+    "email": "tom@figma.com",
+    "company": "Figma",
+    "lastContactedDate": "2026-09-01",
+    "notes": ""
   }
 ]
