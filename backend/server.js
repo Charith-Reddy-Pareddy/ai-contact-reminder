@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import crypto from "crypto";
 
-import { readContacts, writeContacts } from "./utils/fileStore.js";
+import { readContacts, writeContacts } from "./utils/store.js";
 import { buildRecommendations } from "./utils/recommendationService.js";
 import { generateMessage } from "./utils/messageService.js";
 import { validateContact, normalizeContact, isDuplicateEmail } from "./utils/validation.js";

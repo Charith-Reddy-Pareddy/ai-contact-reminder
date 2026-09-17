@@ -22,7 +22,7 @@ A full-stack relationship-tracking tool. It flags contacts you're overdue to fol
 | Frontend | React 18, Vite |
 | Backend | Node.js, Express |
 | AI | OpenAI API (`gpt-4o-mini`), with a local fallback generator |
-| Storage | JSON file on disk |
+| Storage | JSON file on disk, or Postgres if `DATABASE_URL` is set |
 | Deployment | Render (static site + web service) |
 
 ---
@@ -70,12 +70,14 @@ Runs the `node:test` suite covering contact validation and recommendation scorin
 backend/
   server.js                    Express app, routes, error handling
   utils/
+    store.js                    Picks fileStore or pgStore based on DATABASE_URL
     fileStore.js                Read/write contacts.json
+    pgStore.js                  Read/write a Postgres contacts table
     recommendationService.js    Follow-up scoring and sorting
     messageService.js           OpenAI call + fallback generator
     validation.js               Contact validation and normalization
   test/                         node:test unit tests
-  contacts.json                 Data store
+  contacts.json                 Data store (used when DATABASE_URL is unset)
 
 frontend/
   src/
@@ -101,18 +103,32 @@ frontend/
 
 ---
 
+## Persistent storage (optional)
+
+By default, contacts live in `backend/contacts.json`. On Render's free tier that file sits on an ephemeral filesystem, so data can be lost on redeploy or restart — fine for a demo, not for real data.
+
+Setting `DATABASE_URL` switches storage to Postgres automatically (see `backend/utils/store.js`) — no code changes needed. The table is created on first use.
+
+To enable it on Render:
+
+1. Render dashboard → **New** → **PostgreSQL** (free tier available)
+2. Copy the Database URL it gives you
+3. On the backend service → **Environment** → add `DATABASE_URL` with that value
+4. Redeploy
+
+`pgStore.js` was built and verified against a local Postgres instance — full CRUD through the real API, plus confirming data survives a process restart — but not against Render's managed Postgres specifically. `ssl: { rejectUnauthorized: false }` is used for any non-`localhost` connection string, which is the standard setting for most managed Postgres providers; if Render's internal connection URL behaves differently, use the external URL instead.
+
 ## Known limitations
 
 This is a portfolio prototype, not a production CRM:
 
-- **Storage isn't durable.** Contacts live in a JSON file on the backend's disk. Render's free tier uses an ephemeral filesystem, so data can be lost on redeploy or restart. A real deployment would use Postgres/SQLite with a persistent volume.
 - **No authentication.** Anyone with the API URL can read, edit, or delete all contacts.
 - **Recommendation logic is keyword-based, not ML.** "Priority" comes from matching words like `mentor` or `investor` in the notes field, not from any learned model.
 - **Single user, no multi-tenancy.**
+- **Without `DATABASE_URL` set, storage isn't durable** — see above.
 
 ## Possible next steps
 
-- Swap the JSON file for a real database with a persistent volume
 - Add authentication and per-user contact lists
 - Move recommendation scoring to something more robust than keyword matching
 
@@ -127,6 +143,7 @@ This is a portfolio prototype, not a production CRM:
 | `OPENAI_API_KEY` | No | Enables real LLM message generation. Omit to use the fallback generator. |
 | `PORT` | No | Defaults to `4000`. |
 | `FRONTEND_ORIGIN` | No | Restricts CORS to a specific origin. Defaults to `*`. |
+| `DATABASE_URL` | No | Postgres connection string. Omit to use the local `contacts.json` file. |
 
 **Frontend** (`frontend/.env`, see `.env.example`)
 
